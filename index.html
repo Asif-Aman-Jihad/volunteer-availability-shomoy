@@ -397,6 +397,17 @@
                     <button class="btn btn-print" id="printBtn">
                         <i class="fas fa-print"></i> Print List
                     </button>
+
++                   <!-- Search input + buttons -->
++                   <div style="display:flex; gap:8px; align-items:center;">
++                       <input id="searchInput" type="search" placeholder="Search volunteer by name" style="padding:10px; border-radius:8px; border:1px solid #e2e8f0; width:220px;">
++                       <button class="btn btn-secondary" id="searchBtn">
++                           <i class="fas fa-search"></i> Search
++                       </button>
++                       <button class="btn" id="clearSearchBtn" title="Clear search" style="background:#fff;color:#64748b;border:1px solid #e2e8f0;">
++                           <i class="fas fa-times"></i>
++                       </button>
++                   </div>
                 </div>
             </div>
         </header>
@@ -524,6 +535,11 @@
         const refreshBtn = document.getElementById('refreshBtn');
         const clearSelectionBtn = document.getElementById('clearSelectionBtn');
         const printBtn = document.getElementById('printBtn');
+        // Search elements
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        let searchActive = false;
 
         // ============================================
         // GOOGLE SHEETS DATA FETCHING
@@ -534,8 +550,10 @@
             showLoadingState();
             
             try {
-                // Fetch CSV data from Google Sheets
-                const response = await fetch(GOOGLE_SHEETS_CSV_URL);
+                // Fetch CSV data from Google Sheets (add cache-buster to avoid stale responses)
+                const fetchUrl = GOOGLE_SHEETS_CSV_URL + (GOOGLE_SHEETS_CSV_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+                console.log('Fetching Google Sheets CSV:', fetchUrl);
+                const response = await fetch(fetchUrl, { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } });
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
@@ -1051,6 +1069,10 @@
             selectedTimeSlot = null;
             selectedVolunteer = null;
             availableVolunteers = [];
+         
+            // Clear search state
+            if (searchInput) searchInput.value = '';
+            searchActive = false;
             
             // Update UI
             document.querySelectorAll('.time-slot').forEach(el => {
@@ -1148,6 +1170,24 @@
             refreshBtn.addEventListener('click', fetchDataFromGoogleSheets);
             clearSelectionBtn.addEventListener('click', clearSelections);
             printBtn.addEventListener('click', printList);
+           
+           // Search handlers
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', searchVolunteersByName);
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        searchVolunteersByName();
+                    }
+                });
+            }
+            if (clearSearchBtn) {
+                clearSearchBtn.addEventListener('click', () => {
+                    if (searchInput) searchInput.value = '';
+                    searchActive = false;
+                    clearSelections();
+                });
+            }
             
             // Add keyboard shortcuts
             document.addEventListener('keydown', (e) => {
@@ -1168,6 +1208,45 @@
                     printList();
                 }
             });
+        }
+
+        // Search volunteers by name
+        function searchVolunteersByName() {
+            if (!searchInput) return;
+            const q = (searchInput.value || '').trim().toLowerCase();
+            if (!q) {
+                alert('Please enter a name to search.');
+                return;
+            }
+
+            // Search within availableVolunteers if a slot is selected, otherwise in all volunteers
+            const pool = (selectedDay && selectedTimeSlot) ? availableVolunteers.concat() : volunteersData.concat();
+            const results = pool.filter(v => (v.name || '').toLowerCase().includes(q));
+
+            searchActive = true;
+            selectedVolunteer = null;
+            selectedDay = null;
+            selectedTimeSlot = null;
+            selectedSlotInfo.style.display = 'none';
+
+            if (results.length === 0) {
+                volunteersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-times"></i>
+                        <h3>No results</h3>
+                        <p>No volunteers found matching "${searchInput.value.trim()}"</p>
+                    </div>
+                `;
+                const el = document.getElementById('volunteersCount');
+                if (el) el.innerHTML = `<i class="fas fa-users"></i> 0 results for "${searchInput.value.trim()}"`;
+                return;
+            }
+
+            // Show search results
+            availableVolunteers = results;
+            renderVolunteersList();
+            const el = document.getElementById('volunteersCount');
+            if (el) el.innerHTML = `<i class="fas fa-users"></i> ${results.length} result${results.length !== 1 ? 's' : ''} for "${searchInput.value.trim()}"`;
         }
 
         // Initialize the app when DOM is loaded
