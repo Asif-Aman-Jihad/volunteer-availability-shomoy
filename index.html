@@ -476,14 +476,21 @@
         function renderStartEndButtons() {
             startTimeContainer.innerHTML = '';
             endTimeContainer.innerHTML = '';
-            timeSlots.forEach(slot => {
+            // Start times: all slots except the last (8,9,...,3)
+            const startSlots = timeSlots.slice(0, timeSlots.length - 1);
+            // End times: all slots except the first (9,10,...,5)
+            const endSlots = timeSlots.slice(1);
+
+            startSlots.forEach(slot => {
                 const b1 = document.createElement('div');
                 b1.className = 'time-btn';
                 b1.textContent = slot;
                 b1.addEventListener('click', () => selectStart(slot));
                 if (selectedStart === slot) b1.classList.add('selected');
                 startTimeContainer.appendChild(b1);
+            });
 
+            endSlots.forEach(slot => {
                 const b2 = document.createElement('div');
                 b2.className = 'time-btn';
                 b2.textContent = slot;
