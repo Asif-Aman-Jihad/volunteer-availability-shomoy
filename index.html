@@ -1336,7 +1336,7 @@
             {username: "ragib", password: "78b5d26ad5c8e3349f5d61dc46b30d23a85524f0da0ea169d0537d026ea1d222", displayName: "Ragib Hasan"},
             {username: "jihad", password: "78b5d26ad5c8e3349f5d61dc46b30d23a85524f0da0ea169d0537d026ea1d222", displayName: "Jihad"}
         ];
-        const DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS6o4TCiRGrKLtyLVa_h2Sn8nzi3qIJbukGGpd-MH2eW1vMA63CCJIBPA_7DmOBhzNPfToguLSTZO3J/pub?output=csv';
+        const DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlcK4fLHCCn50J8SG6mBbCZctpYMCGZoB55HxXFNF0nIHXF-yNj_6o-xoOSZpJ1wigidg5sPWRadWd/pub?output=csv';
         const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
         const DAY_START = '08:00';
         const DAY_END = '20:00';
@@ -1359,6 +1359,7 @@
                 if (period === 'AM' && h === 12) h = 0;
             } else {
                 if (h < 0 || h > 23 || m < 0 || m > 59) return NaN;
+                if (h > 0 && h < 8) h += 12;
             }
             return h * 60 + m;
         }
@@ -1476,7 +1477,7 @@
                     name: row['Your Name'] || row['Name'] || '',
                     studentId: row['Student ID'] || '',
                     department: row['Department'] || '',
-                    phone: row['Phone Number'] || row['Phone'] || '',
+                    phone: row['Phone Number (include +880)'] || row['Phone Number'] || row['Phone'] || '',
                     schedule: {
                         Sunday: parseSlots(row['Sunday'] || row['Sunday '] || ''),
                         Monday: parseSlots(row['Monday'] || row['Monday '] || ''),
