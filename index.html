@@ -292,6 +292,7 @@
         h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
         .subtitle { font-size: 0.9rem; opacity: 0.75; font-weight: 400; line-height: 1.5; color: var(--muted); }
   
+     
         .user-info {
             display: flex;
             align-items: center;
@@ -324,6 +325,7 @@
             box-shadow: var(--avatar-shadow);
         }
   
+     
         .controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; align-items: stretch; }
         .btn {
             padding: 11px 20px;
@@ -377,7 +379,7 @@
             box-shadow: 0 6px 20px rgba(255, 59, 48, 0.35);
         }
         .btn:active { transform: translateY(0) !important; }
-  
+     
         .main-content { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 30px; }
         .card {
             background: var(--glass-bg);
@@ -592,6 +594,193 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   
+        }
+        .card-title i { color: var(--primary); font-size: 1.2rem; }
+     
+        .day-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .day-tab {
+            padding: 10px 18px;
+            border-radius: 12px;
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            border: 1px solid var(--input-border);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            color: var(--body-color);
+            box-shadow: 0 2px 8px rgba(var(--shadow-rgb), 0.05);
+        }
+        .day-tab:hover {
+            background: var(--hover-bg);
+            border-color: var(--day-tab-hover-border);
+            transform: translateY(-2px);
+            box-shadow: var(--day-tab-hover-shadow);
+        }
+        .day-tab.selected {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.35);
+            transform: translateY(-2px);
+        }
+        .day-tab.today::after {
+            content: "Today";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+            color: white;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.4);
+        }
+     
+        .time-inputs { display: grid; gap: 15px; }
+        .time-inputs > div { display: flex; flex-direction: column; gap: 8px; }
+        .time-inputs label { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+        .time-inputs input {
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--body-color);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(var(--shadow-rgb), 0.05);
+        }
+        .time-inputs input:focus {
+            border-color: var(--input-focus-border);
+            background: var(--input-focus-bg);
+            box-shadow: var(--input-focus-shadow);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        .time-error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 8px;
+            display: none;
+            padding: 8px 12px;
+            background: var(--error-bg);
+            border-radius: 8px;
+            border-left: 3px solid var(--danger);
+        }
+     
+        #selectionInfo {
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: var(--selection-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            display: none;
+            border-left: 3px solid var(--primary);
+            font-size: 0.95rem;
+            color: var(--body-color);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.1);
+        }
+     
+        .volunteers-list { max-height: 500px; overflow-y: auto; }
+        .volunteers-list::-webkit-scrollbar { width: 8px; }
+        .volunteers-list::-webkit-scrollbar-track { background: var(--scroll-track); border-radius: 10px; }
+        .volunteers-list::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 10px; }
+        .volunteers-list::-webkit-scrollbar-thumb:hover { background: var(--scroll-thumb-hover); }
+     
+        .compact-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .compact-table th, .compact-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--table-border);
+            text-align: left;
+            color: var(--body-color);
+        }
+        .compact-table th {
+            background: var(--table-th-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--table-th-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        .compact-table tr { transition: all 0.2s ease; }
+        .compact-table tr:hover {
+            background: var(--table-hover);
+            cursor: pointer;
+            transform: scale(1.01);
+        }
+     
+        .volunteer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--vol-item-border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            color: var(--body-color);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(var(--shadow-rgb), 0.03);
+        }
+        .volunteer-item:hover {
+            background: var(--table-hover);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(var(--shadow-rgb), 0.08);
+        }
+        .volunteer-info h4 { font-weight: 600; margin-bottom: 6px; font-size: 1rem; }
+        .volunteer-info p { font-size: 0.85rem; color: var(--muted); }
+        .volunteer-phone {
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.25);
+        }
+        .volunteer-phone:hover {
+            background: linear-gradient(135deg, var(--success-dark) 0%, var(--success) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.35);
+        }
+     
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state i { font-size: 3.5rem; margin-bottom: 20px; color: var(--empty-i); }
+        .empty-state p { font-size: 1rem; margin-top: 10px; }
+     
+        .loading { text-align: center; padding: 40px; color: var(--primary); }
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--spinner-border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+     
         footer {
             text-align: center;
             padding: 25px;
@@ -605,6 +794,9 @@
   
         .print-selection { display: none; }
   
+     
+        .print-selection { display: none; }
+     
         .controls .input-group {
             display: flex;
             align-items: stretch;
@@ -683,6 +875,7 @@
             transform: scale(0.9);
         }
   
+     
         .modal {
             display: none;
             position: fixed;
@@ -730,6 +923,7 @@
         }
         .close:hover, .close:focus { color: var(--close-hover); transform: rotate(90deg); }
   
+     
         #profileName {
             font-size: 1.7rem;
             font-weight: 700;
@@ -771,6 +965,7 @@
             font-weight: 600;
         }
   
+     
         @media print {
             body * { visibility: hidden; color: #000 !important; background: #fff !important; }
             header, .controls, .card:first-child, footer, #selectionInfo { display: none !important; }
@@ -1220,6 +1415,16 @@
             .volunteers-list {
                 max-height: 300px;
             }
+     
+        @media (min-width: 1024px) { .main-content { grid-template-columns: 1fr 2fr; } }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            header { padding: 20px; }
+            h1 { font-size: 1.5rem; }
+            .controls { gap: 10px; }
+            .controls .input-group input { min-width: 150px; }
+            .controls .input-group .search-btn { padding: 0 14px; }
+            .controls .input-group .search-btn i { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -1318,6 +1523,10 @@
         2026 AIUB Social Welfare Club - SHOMOY
     </p>
 </footer>
+            <footer>
+                <p><i class="fas fa-comment-alt"></i> Feedback or Complaints? <a href="https://forms.gle/5C8rLt4VvbVZM4SNA" target="_blank">Submit here</a></p>
+                <p style="margin-top:8px; opacity:0.7;"><i class="far fa-copyright"></i> 2026 AIUB Social Welfare Club - SHOMOY</p>
+            </footer>
         </div>
     </div>
     <div id="profileModal" class="modal">
@@ -1363,12 +1572,15 @@
             }
             return h * 60 + m;
         }
+      
+        function timeToMin(t) { const [h, m] = t.split(':').map(Number); return h * 60 + (m || 0); }
         function minToTime(min) { const h = Math.floor(min / 60).toString().padStart(2, '0'); const m = (min % 60).toString().padStart(2, '0'); return `${h}:${m}`; }
         function formatToAMPM(t) { const [h, m] = t.split(':').map(Number); const period = h >= 12 ? 'PM' : 'AM'; const hh = h % 12 || 12; return `${hh}:${m.toString().padStart(2,'0')} ${period}`; }
         function overlap(s1, e1, s2, e2) { const [a,b,c,d] = [timeToMin(s1), timeToMin(e1), timeToMin(s2), timeToMin(e2)]; return !(b <= c || a >= d); }
         function esc(s) { return (s || '').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
         function fmtPhone(p) { if (!p || p === 'N/A') return 'N/A'; let n = p.replace(/\D/g,''); if (n.length === 10) n = '0' + n; if (n.length === 11 && n[0]==='0') return n.slice(0,4)+'-'+n.slice(4,8)+'-'+n.slice(8); return p; }
    
+      
         function getFreeSlots(slots) {
             if (!slots || slots.length === 0) return ['No schedule information'];
             if (slots[0] === 'No classes') return [`${formatToAMPM(DAY_START)} – ${formatToAMPM(DAY_END)}`];
@@ -1379,6 +1591,8 @@
                 if (isNaN(startMin) || isNaN(endMin)) return null;
                 return {start: startMin, end: endMin};
             }).filter(b => b !== null).sort((a, b) => a.start - b.start);
+                return {start: timeToMin(s), end: timeToMin(e)};
+            }).sort((a, b) => a.start - b.start);
             let free = [];
             let current = timeToMin(DAY_START);
             for (let b of busy) {
@@ -1393,6 +1607,7 @@
             return free.length ? free : ['No free time'];
         }
    
+      
         // Login
         document.getElementById('loginForm').addEventListener('submit', e => {
             e.preventDefault();
@@ -1414,6 +1629,9 @@
    
         document.getElementById('logoutBtn').addEventListener('click', () => location.reload());
    
+      
+        document.getElementById('logoutBtn').addEventListener('click', () => location.reload());
+      
         // Data loading
         async function loadData(forceRefresh = false) {
             if (forceRefresh) {
@@ -1448,6 +1666,7 @@
             }
         }
    
+      
         function updateCacheIndicator(timestamp, isLive) {
             const el = document.getElementById('dataSource');
             if (isLive) {
@@ -1459,6 +1678,7 @@
             }
         }
    
+      
         function parseCSV(csv) {
             const lines = csv.split(/\r?\n/).filter(l => l.trim());
             if (lines.length < 2) return [];
@@ -1478,6 +1698,7 @@
                     studentId: row['Student ID'] || '',
                     department: row['Department'] || '',
                     phone: row['Phone Number (include +880)'] || row['Phone Number'] || row['Phone'] || '',
+                    phone: row['Phone Number'] || row['Phone'] || '',
                     schedule: {
                         Sunday: parseSlots(row['Sunday'] || row['Sunday '] || ''),
                         Monday: parseSlots(row['Monday'] || row['Monday '] || ''),
@@ -1489,11 +1710,13 @@
             }).filter(v => v.name && v.studentId);
         }
    
+      
         function parseSlots(str) {
             if (!str || str.toLowerCase().includes('no class')) return ['No classes'];
             return str.split(',').map(s => s.trim()).filter(s => s);
         }
    
+      
         function renderDayTabs() {
             const today = new Date();
             const dayIndex = today.getDay();
@@ -1505,6 +1728,9 @@
    
         function selectDay(day) { selectedDay = day; renderDayTabs(); update(); }
    
+      
+        function selectDay(day) { selectedDay = day; renderDayTabs(); update(); }
+      
         function update() {
             const start = document.getElementById('startTimeInput').value;
             const end = document.getElementById('endTimeInput').value;
@@ -1557,12 +1783,30 @@
             const now = new Date();
             const exportDate = now.toLocaleDateString('default', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
        
+      
+        function renderResults() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const list = (selectedDay && document.getElementById('startTimeInput').value && document.getElementById('endTimeInput').value) ? available : volunteers;
+            const filtered = list.filter(v => v.name.toLowerCase().includes(query) || v.studentId.includes(query));
+            const container = document.getElementById('volunteersList');
+            const start = document.getElementById('startTimeInput').value;
+            const end = document.getElementById('endTimeInput').value;
+          
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-user-slash"></i><p>No volunteers found</p></div>`;
+                return;
+            }
+          
+            const now = new Date();
+            const exportDate = now.toLocaleDateString('default', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+          
             let printHeader = `<div class="print-header" style="display:none;">
                 <h1>AIUB Social Welfare Club - SHOMOY</h1>
                 <p>Exported By: ${esc(currentUser.displayName)}</p>
                 <p>Export Date: ${exportDate}</p>
                 <p>Export Time: ${new Date().toLocaleTimeString()}</p>`;
        
+          
             if (selectedDay && start && end) {
                 printHeader += `
                 <p>Export Day: ${esc(selectedDay)}</p>
@@ -1591,6 +1835,28 @@
             container.innerHTML = printHeader + content;
         }
    
+            }
+          
+            printHeader += `
+                <p>Available Volunteers:</p>
+            </div>`;
+          
+            let content = filtered.map(v =>
+                `<div class="volunteer-item" onclick="showProfile('${esc(v.studentId)}')">
+                    <div class="volunteer-info"><h4>${esc(v.name)}</h4><p>${esc(v.department)} • ${esc(v.studentId)}</p></div>
+                    <a href="tel:${v.phone.replace(/\D/g,'')}" class="volunteer-phone">${fmtPhone(v.phone)}</a>
+                </div>`
+            ).join('');
+          
+            if (selectedDay && start && end) {
+                content = `<table class="compact-table"><thead><tr><th>Name</th><th>ID</th><th>Phone</th></tr></thead><tbody>${filtered.map(v =>
+                    `<tr onclick="showProfile('${esc(v.studentId)}')"><td>${esc(v.name)}</td><td>${esc(v.studentId)}</td><td><a href="tel:${v.phone.replace(/\D/g,'')}" class="volunteer-phone">${fmtPhone(v.phone)}</a></td></tr>`
+                ).join('')}</tbody></table>`;
+            }
+          
+            container.innerHTML = printHeader + content;
+        }
+      
         function showProfile(id) {
             const v = volunteers.find(v => v.studentId === id);
             if (!v) return;
@@ -1611,6 +1877,14 @@
             document.getElementById('profileModal').style.display = 'block';
         }
    
+            scheduleDiv.innerHTML = '<h3>Available Days & Times:</h3><ul>' + days.map(day => {
+                const slots = v.schedule[day];
+                const free = getFreeSlots(slots);
+                return `<li><strong>${day}:</strong> ${esc(free.join(', '))}</li>`;
+            }).join('') + '</ul>';
+            document.getElementById('profileModal').style.display = 'block';
+        }
+      
         function init() {
             const today = new Date();
             const dayIndex = today.getDay();
@@ -1618,21 +1892,25 @@
             renderDayTabs();
             loadData();
        
+          
             if (cacheUpdateInterval) clearInterval(cacheUpdateInterval);
             if (isFromCache) {
                 cacheUpdateInterval = setInterval(() => updateCacheIndicator(cacheTimestamp, false), 60000);
             }
        
+          
             document.getElementById('startTimeInput').addEventListener('change', update);
             document.getElementById('endTimeInput').addEventListener('change', update);
             document.getElementById('searchInput').addEventListener('input', renderResults);
             document.getElementById('searchBtn').addEventListener('click', renderResults);
        
+          
             document.getElementById('refreshBtn').addEventListener('click', () => {
                 document.getElementById('dataStatus').style.display = 'block';
                 loadData(true);
             });
        
+          
             document.getElementById('clearBtn').addEventListener('click', () => {
                 selectedDay = days[today.getDay() === 0 ? 0 : today.getDay() - 1];
                 document.getElementById('startTimeInput').value = '08:00';
@@ -1646,6 +1924,9 @@
        
             document.getElementById('printBtn').addEventListener('click', () => window.print());
        
+          
+            document.getElementById('printBtn').addEventListener('click', () => window.print());
+          
             const modal = document.getElementById('profileModal');
             const closeBtn = document.getElementById('closeModal');
             closeBtn.onclick = () => { modal.style.display = 'none'; };
@@ -1668,6 +1949,7 @@
             });
         }
    
+      
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
             if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && [73,67,74].includes(e.keyCode)) || (e.ctrlKey && e.key === 'u'))
