@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Feedback Form - AIUB SWC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-rgb: 0,0,0;
+            --shadow-rgb: 0,0,0;
+            --shadow-opacity: 0.1;
+            --body-bg: #f0f2f5;
+            --body-color: #1a1a1a;
+            --primary: #4a90e2;
+            --primary-dark: #357abd;
+            --success: #34c759;
+            --success-dark: #28a745;
+            --danger: #ff3b30;
+            --danger-dark: #e62e24;
+            --muted: #6c757d;
+            --secondary-bg: rgba(255, 255, 255, 0.8);
+            --secondary-bg-dark: rgba(248, 249, 250, 0.9);
+            --border: rgba(0, 0, 0, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.7);
+            --input-border: rgba(0, 0, 0, 0.12);
+            --input-focus-bg: rgba(255, 255, 255, 0.95);
+            --input-focus-border: #4a90e2;
+            --input-focus-shadow: 0 0 0 4px rgba(74,144,226,0.25);
+            --hover-bg: rgba(233, 236, 239, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            --login-bg-gradient: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #e3f2fd 100%);
+            --login-card-shadow: 0 20px 60px rgba(74, 144, 226, 0.2);
+            --login-card-border: rgba(74, 144, 226, 0.15);
+        }
+       
+        body.dark {
+            --accent-rgb: 255,255,255;
+            --shadow-rgb: 0,0,0;
+            --shadow-opacity: 0.4;
+            --body-bg: #0f0f0f;
+            --body-color: #f5f5f5;
+            --muted: #aaaaaa;
+            --secondary-bg: rgba(30, 30, 30, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(30, 30, 30, 0.7);
+            --input-border: rgba(255, 255, 255, 0.12);
+            --input-focus-bg: rgba(40, 40, 40, 0.95);
+            --input-focus-border: #4a90e2;
+            --input-focus-shadow: 0 0 0 4px rgba(74,144,226,0.15);
+            --hover-bg: rgba(45, 45, 45, 0.8);
+            --glass-bg: rgba(30, 30, 30, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255,255,255,0.08);
+            --card-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --login-bg-gradient: linear-gradient(135deg, #0a1929 0%, #1a237e 50%, #0a1929 100%);
+            --login-card-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --login-card-border: rgba(74, 144, 226, 0.2);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: var(--body-bg);
+            color: var(--body-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(52, 199, 89, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .container {
+            background: var(--login-bg-gradient);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            padding: 20px;
+        }
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        .container::before {
+            top: -200px;
+            right: -200px;
+        }
+        .container::after {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            left: -150px;
+            animation-duration: 10s;
+            animation-delay: -3s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        .form-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            padding: 45px 40px;
+            border-radius: 24px;
+            box-shadow: var(--login-card-shadow),
+                        0 0 0 1px var(--login-card-border),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 650px;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            border: 1px solid var(--login-card-border);
+            margin: auto;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--input-border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--body-color);
+            font-size: 1.1rem;
+        }
+        .theme-toggle:hover {
+            background: var(--hover-bg);
+            transform: scale(1.1) rotate(15deg);
+        }
+        h1 {
+            text-align: center;
+            color: var(--body-color);
+            margin-bottom: 12px;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            text-align: center;
+            margin-bottom: 35px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--body-color);
+            font-size: 0.95rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--body-color);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(var(--shadow-rgb), 0.05);
+            font-family: 'Poppins', sans-serif;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: var(--input-focus-border);
+            background: var(--input-focus-bg);
+            box-shadow: var(--input-focus-shadow);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .rating-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .rating-group label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--muted);
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--input-border);
+            transition: all 0.3s ease;
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .rating-group label:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .rating-group input[type="radio"] {
+            display: none;
+        }
+        .rating-group input[type="radio"]:checked + span {
+            color: #fff;
+        }
+        .rating-group label:has(input[type="radio"]:checked) {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.35);
+        }
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 10px;
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(74, 144, 226, 0.45);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            opacity: 0.7;
+        }
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 25px;
+            }
+            .rating-group {
+                gap: 6px;
+            }
+            .rating-group label {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            button {
+                padding: 14px;
+                font-size: 0.95rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .form-card {
+                padding: 25px 18px;
+            }
+            h1 {
+                font-size: 1.3rem;
+            }
+            .rating-group {
+                flex-wrap: wrap;
+            }
+            .rating-group label {
+                flex: 0 0 calc(20% - 5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <h1>Website Feedback Form</h1>
+            <p class="subtitle">Thank you for using the <b> AIUB Social Welfare Club - Shomoy's </b> volunteer tracking website. Your feedback is valuable and will help us improve the system. Please share any issues, suggestions, or comments you have.</p>
+            <form id="feedbackForm" action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfouMNLL4CzJDNviEs1c5lmk-nEwTJvy2fBM8BcHrwCvJhTJQ/formResponse" method="POST">
+                <div class="form-group">
+                    <label for="entry.1718716021">Name</label>
+                    <input type="text" id="entry.1718716021" name="entry.1718716021" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="entry.439994940">Email</label>
+                    <input type="email" id="entry.439994940" name="entry.439994940" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>How easy was it to use the volunteer availability tracking system?</label>
+                    <div class="rating-group">
+                        <label>
+                            <input type="radio" name="entry.1676553192" value="1">
+                            <span>1</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="entry.1676553192" value="2">
+                            <span>2</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="entry.1676553192" value="3">
+                            <span>3</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="entry.1676553192" value="4">
+                            <span>4</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="entry.1676553192" value="5">
+                            <span>5</span>
+                        </label>
+                    </div>
+                    <div class="rating-labels">
+                        <span>Very Difficult</span>
+                        <span>Very Easy</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="entry.1172538863">Did you face any technical issues while using the website? (e.g., bugs, errors, broken links)</label>
+                    <textarea id="entry.1172538863" name="entry.1172538863" placeholder="Describe any issues you encountered..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="entry.55614303">Which features did you find most helpful?</label>
+                    <textarea id="entry.55614303" name="entry.55614303" placeholder="Tell us what you liked..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="entry.1132698514">Which features need improvement or are missing?</label>
+                    <textarea id="entry.1132698514" name="entry.1132698514" placeholder="Share your suggestions..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="entry.1739298750">Any other suggestions or comments?</label>
+                    <textarea id="entry.1739298750" name="entry.1739298750" placeholder="Additional feedback..."></textarea>
+                </div>
+                <input type="hidden" name="fvv" value="1">
+                <input type="hidden" name="fbzx" value="-7765901021283222612">
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Feedback
+                </button>
+                <div id="formMessage" style="text-align: center; margin-top: 10px;"></div>
+            </form>
+            <div class="footer">
+                <i class="far fa-copyright"></i> 2026 AIUB Social Welfare Club - SHOMOY
+            </div>
+        </div>
+    </div>
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+           
+            body.classList.toggle('dark');
+           
+            if (body.classList.contains('dark')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        // Load saved theme on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+           
+            if (savedTheme === 'dark') {
+                body.classList.add('dark');
+                icon.className = 'fas fa-sun';
+            }
+
+            // Form submission handler
+            const form = document.getElementById('feedbackForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const messageDiv = document.getElementById('formMessage');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                submitButton.disabled = true;
+                messageDiv.textContent = 'Submitting...';
+                messageDiv.style.color = 'var(--muted)';
+
+                const formData = new FormData(form);
+
+                try {
+                    await fetch(form.action, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: formData
+                    });
+
+                    messageDiv.textContent = 'Submission succeeded! Redirecting...';
+                    messageDiv.style.color = 'var(--success)';
+                    form.reset(); // Clear the form after success
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                } catch (error) {
+                    messageDiv.textContent = 'Submission failed. Please try again.';
+                    messageDiv.style.color = 'var(--danger)';
+                } finally {
+                    submitButton.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
